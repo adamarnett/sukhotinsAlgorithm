@@ -112,8 +112,9 @@ def initLetters(diaeresis, justLen):
 #
 # param fileName  --> name of file to be read, "words.txt" for example.
 # param letters   --> unmodified dictionary returned by initLetters()
+# param showErrors  --> bool, prints rejected characters if true
 #
-def step1(fileName, letters):
+def step1(fileName, letters, showErrors):
     # open the text file and read in characters
     # lastChar keeps track of whatever the last read character is
     lastChar = ""
@@ -147,12 +148,11 @@ def step1(fileName, letters):
 
                 # except any characters not usually part of the alphabet, like æ or é
                 except:
-                    # do nothing
-                    # possible improvement --> consider these anyways? Like æ as "ae"?
-                    #pass
-                    print("--------------------")
-                    print(f"| REJECTED CHAR: {char} |")
-                    print("--------------------")
+                    # display message about unknown character
+                    if (showErrors):
+                        print("--------------------")
+                        print(f"| REJECTED CHAR: {char} |")
+                        print("--------------------")
 
 
 # step2 --> Clears the fequency of two of the same letter occuring next to each other.
@@ -356,9 +356,9 @@ def step6():
 #
 # ret vowels    --> list of strings representing the vowels that were found
 #
-def sukhotinsAlgorithm(fileName, diaeresis=False, justLen=6):
+def sukhotinsAlgorithm(fileName, diaeresis=False, justLen=6, showErrors=True):
     letters = initLetters(diaeresis, justLen)
-    step1(fileName, letters)
+    step1(fileName, letters, showErrors)
     step2(letters)
     rowSums, letterTypes = step3(letters)
     step4(letters, rowSums, letterTypes)

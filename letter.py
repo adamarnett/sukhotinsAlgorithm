@@ -12,7 +12,7 @@ class letter:
     adjacentFrequencies = {}
     frequency = 0
     diaeresis = False
-    justLen = 6
+    justLen = 0
 
     def __init__(self, name, diaeresis=False, justLen=6):
         self = self
@@ -86,8 +86,9 @@ class letter:
     
     # doRepr --> string of acceptable characters to show like "ABCXYZ"
     # use to not print letters that don't appear at all
-    def reducedJustifiedRepr(self, doRepr, maxLen):
+    def reducedJustifiedRepr(self, doRepr):
         retStr = f"{self.name}: [" 
+        maxLen = self.justLen
 
         for i in range(25):
             if (chr(97+i) in doRepr):

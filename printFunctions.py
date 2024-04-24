@@ -47,9 +47,9 @@ def printFmtEnd():
 # pass [-1] to vowels to only show character frequencies
 def printReducedTable(letters, vowels=[]):
     # find appropriate justification
-    just = 0
-    for char in letters:
-        just = max(just, int(str(letters[char].getMaxFreq())))
+    #just = 0
+    #for char in letters:
+    #    just = max(just, int(str(letters[char].getMaxFreq())))
 
     # print only characters present in words.txt
     doPrint = ""
@@ -60,7 +60,7 @@ def printReducedTable(letters, vowels=[]):
     for char in letters:
         if (letters[char].freq() > 0):
             doPrint += char
-            banner += (char.rjust(just) + "|")
+            banner += (char.rjust(letters[char].justLen) + "|")
     banner = banner[:-1] + "]  Sum"
     printFmt(1)
     print(banner)
@@ -70,7 +70,7 @@ def printReducedTable(letters, vowels=[]):
             print("    VOWEL ", end="")
         elif (vowels != [-1]):
             print("CONSONANT ", end="")
-        print(letters[char].reducedJustifiedRepr(doPrint, just))
+        print(letters[char].reducedJustifiedRepr(doPrint))
         printFmtEnd()
     
     if (vowels != [-1]):
