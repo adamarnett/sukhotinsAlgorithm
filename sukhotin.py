@@ -1,305 +1,5 @@
 
-# true if you would like to consider ä, ö, and ü
-UMLAUT = True
-# length of justification for printing, makes everything line up if some characters
-#   are much more abundant than others
-# > 7 causes the row to spill into the next line with the terminal at max width on
-#   my 14 inch laptop
-JUSTLEN = 6
-
-# read from this file
-fileName = "kalevala.txt"
-#fileName = "frankenstein.txt"
-#fileName = "aliceInWonderland.txt"
-#fileName = "collection.txt"
-#fileName = "ShikéyahBidahNa'at'a'í.txt"
-#fileName = "verwandlung.txt"
-#fileName = "words.txt"
-#fileName = "empty.txt"
-
-
-#██████╗ ██████╗ ██╗███╗   ██╗████████╗    ███████╗ ██████╗ ██████╗ ███╗   ███╗ █████╗ ████████╗████████╗██╗███╗   ██╗ ██████╗ 
-#██╔══██╗██╔══██╗██║████╗  ██║╚══██╔══╝    ██╔════╝██╔═══██╗██╔══██╗████╗ ████║██╔══██╗╚══██╔══╝╚══██╔══╝██║████╗  ██║██╔════╝ 
-#██████╔╝██████╔╝██║██╔██╗ ██║   ██║       █████╗  ██║   ██║██████╔╝██╔████╔██║███████║   ██║      ██║   ██║██╔██╗ ██║██║  ███╗
-#██╔═══╝ ██╔══██╗██║██║╚██╗██║   ██║       ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║██╔══██║   ██║      ██║   ██║██║╚██╗██║██║   ██║
-#██║     ██║  ██║██║██║ ╚████║   ██║       ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║   ██║      ██║   ██║██║ ╚████║╚██████╔╝
-#╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝       ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-# pretty colors --> works on various UNIXes
-# editor themes will modify the colors a bit
-class bcolors:
-    HEADER = '\033[95m' 
-    OKBLUE = '\033[94m' 
-    OKCYAN = '\033[96m' 
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-def printFmt(input):
-    if (input < 2):
-        if input:
-            print(bcolors.OKCYAN, end="")
-        else:
-            print(bcolors.FAIL, end="")
-    elif (input == 2):
-        print(bcolors.FAIL, end="")
-    elif (input == 3):
-        print(bcolors.OKCYAN, end="")
-
-
-def printFmtEnd():
-    print(bcolors.ENDC, end="")
-
-
-#██╗     ███████╗████████╗████████╗███████╗██████╗      ██████╗██╗      █████╗ ███████╗███████╗
-#██║     ██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗    ██╔════╝██║     ██╔══██╗██╔════╝██╔════╝
-#██║     █████╗     ██║      ██║   █████╗  ██████╔╝    ██║     ██║     ███████║███████╗███████╗
-#██║     ██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗    ██║     ██║     ██╔══██║╚════██║╚════██║
-#███████╗███████╗   ██║      ██║   ███████╗██║  ██║    ╚██████╗███████╗██║  ██║███████║███████║
-#╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝
-
-# represent a single letter like "a", "b", or "c"
-class letter:
-    name = ""
-    adjacentFrequencies = {}
-    frequency = 0;
-
-    def __init__(self, name):
-        self = self
-        # error checking
-        if (len(name) > 1):
-            return
-        # actual letter, ie "a"
-        self.name = name.lower()
-
-        # frequencies of letters adjacent to this one
-        self.adjFreq = {}
-
-        # for each letter, init frequency to zero
-        # {"<letter>" : <frequency of adjacency>}
-        for i in range(26):
-            self.adjFreq.update({chr(97+i) : 0})
-        if (UMLAUT):
-            self.adjFreq.update({"ä" : 0})
-            self.adjFreq.update({"ö" : 0})
-            self.adjFreq.update({"ü" : 0})
-        
-        # frequency of this letter in the text
-        self.ovrFreq = 0;
-    
-    def __repr__(self):
-
-        retStr = f"{self.name}: [" 
-
-        for i in range(25):
-            retStr += (f"{self.adjFreq[chr(97+i)]}|").rjust(JUSTLEN)
-
-        if (UMLAUT):
-            retStr += (f"{self.adjFreq[chr(97+25)]}|").rjust(JUSTLEN)
-            äFreq = self.adjFreq["ä"]
-            retStr += (f"{äFreq}|").rjust(JUSTLEN)
-            öFreq = self.adjFreq["ö"]
-            retStr += (f"{öFreq}|").rjust(JUSTLEN)
-            üFreq = self.adjFreq["ü"]
-            retStr += (f"{üFreq}").rjust(JUSTLEN-1)
-        
-        retStr += f"]  {self.getSum()}"
-        
-        return retStr
-    
-    def justifiedRepr(self, maxLen):
-        retStr = f"{self.name}: [" 
-
-        for i in range(25):
-            retStr += (f"{self.adjFreq[chr(97+i)]}|").rjust(maxLen)
-
-        if (UMLAUT):
-            retStr += (f"{self.adjFreq[chr(97+25)]}|").rjust(maxLen)
-            äFreq = self.adjFreq["ä"]
-            retStr += (f"{äFreq}|").rjust(maxLen)
-            öFreq = self.adjFreq["ö"]
-            retStr += (f"{öFreq}|").rjust(maxLen)
-            üFreq = self.adjFreq["ü"]
-            retStr += f"{üFreq}"
-
-        retStr += f"]  {self.getSum()}"
-        
-        return retStr
-    
-    # doRepr --> string of acceptable characters to show like "ABCXYZ"
-    # use to not print letters that don't appear at all
-    def reducedJustifiedRepr(self, doRepr, maxLen):
-        retStr = f"{self.name}: [" 
-
-        for i in range(25):
-            if (chr(97+i) in doRepr):
-                if(retStr[-1] not in "[|"):
-                    retStr += "|"
-                retStr += (f"{self.adjFreq[chr(97+i)]}").rjust(maxLen)
-
-        if (chr(97+25) in doRepr):
-            retStr += (f"|{self.adjFreq[chr(97+25)]}").rjust(maxLen)
-        if (UMLAUT):
-            retStr += "|"
-            if (chr(228) in doRepr):
-                äFreq = self.adjFreq["ä"]
-                retStr += f"{äFreq}".rjust(maxLen)
-            if (chr(246) in doRepr):
-                if (retStr[-1] != "|"):
-                    retStr += "|"
-                öFreq = self.adjFreq["ö"]
-                retStr += f"{öFreq}".rjust(maxLen)
-            if (chr(252) in doRepr):
-                if (retStr[-1] != "|"):
-                    retStr += "|"
-                üFreq = self.adjFreq["ü"]
-                retStr += f"{üFreq}".rjust(maxLen)
-        
-        retStr += f"]  {self.getSum()}"
-        return retStr
-
-    # get frequency of a given letter c
-    def freqOf(self, c):
-        return self.adjFreq[c]
-    
-    # get frequency of this letter in the text
-    def freq(self):
-        return self.ovrFreq
-    
-    # increment overall frequency
-    def incThis(self):
-        self.ovrFreq += 1
-
-    # increment adjacent letter frequency
-    def incThat(self, c):
-        self.adjFreq[c] += 1
-
-    # clear double adjacent letter (ie, AA = 0, BB = 0, etc)
-    def clearDouble(self):
-        self.adjFreq[self.name] = 0
-
-    # get maximum length of largest frequency
-    # used for print formatting
-    def getMaxFreq(self):
-        maxLen = 0
-        for i in range(26):
-            maxLen = max(maxLen, self.adjFreq[chr(97+i)])
-        if (UMLAUT):
-            maxLen = max(maxLen, self.adjFreq[chr(228)])
-            maxLen = max(maxLen, self.adjFreq[chr(246)])
-            maxLen = max(maxLen, self.adjFreq[chr(252)])
-        return len(str(maxLen))
-
-    # return sum of frequencies for all other letters
-    def getSum(self):
-        sum = 0
-        for i in range(26):
-            sum += self.adjFreq[chr(97+i)]
-        if (UMLAUT):
-            sum += self.adjFreq["ü"]
-            sum += self.adjFreq["ä"]
-            sum += self.adjFreq["ö"]
-        return sum
-    
-
-#██████╗ ██████╗ ██╗███╗   ██╗████████╗    ███████╗██╗   ██╗███╗   ██╗ ██████╗███████╗
-#██╔══██╗██╔══██╗██║████╗  ██║╚══██╔══╝    ██╔════╝██║   ██║████╗  ██║██╔════╝██╔════╝
-#██████╔╝██████╔╝██║██╔██╗ ██║   ██║       █████╗  ██║   ██║██╔██╗ ██║██║     ███████╗
-#██╔═══╝ ██╔══██╗██║██║╚██╗██║   ██║       ██╔══╝  ██║   ██║██║╚██╗██║██║     ╚════██║
-#██║     ██║  ██║██║██║ ╚████║   ██║       ██║     ╚██████╔╝██║ ╚████║╚██████╗███████║
-#╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝   ╚═╝       ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚══════╝
-
-# print table of characters present in text
-# pass [-1] to vowels to only show character frequencies
-def printReducedTable(letters, vowels=[]):
-    # find appropriate justification
-    just = 0
-    for char in letters:
-        just = max(just, int(str(letters[char].getMaxFreq())))
-
-    # print only characters present in words.txt
-    doPrint = ""
-    if (vowels != [-1]):
-        banner = "             ["
-    else:
-        banner = "   ["
-    for char in letters:
-        if (letters[char].freq() > 0):
-            doPrint += char
-            banner += (char.rjust(just) + "|")
-    banner = banner[:-1] + "]  Sum"
-    printFmt(1)
-    print(banner)
-    for char in doPrint:
-        printFmt((doPrint.index(char))%2)
-        if (char in vowels):
-            print("    VOWEL ", end="")
-        elif (vowels != [-1]):
-            print("CONSONANT ", end="")
-        print(letters[char].reducedJustifiedRepr(doPrint, just))
-        printFmtEnd()
-    
-    if (vowels != [-1]):
-        print("------------------------------------",end="")
-        for i in range(len(vowels)):
-            print("--",end="")
-        print()
-        print(f"| The following vowels were found: ",end="")
-        for i in range(len(vowels)):
-            print(f"{vowels[i]},", end="")
-        print("|")
-        print("------------------------------------",end="")
-        for i in range(len(vowels)):
-            print("--",end="")
-        if (len(vowels) == 0):
-            print("No vowels were found...")
-        print()
-
-def printFullTable(letters, vowels=[]):
-    # find appropriate justification
-    just = 0
-    for char in letters:
-        just = max(just, int(str(letters[char].getMaxFreq())))
-
-    just = JUSTLEN-1
-    if (vowels != [-1]):
-        banner = "             ["
-    else:
-        banner = "   ["
-    for char in letters:
-        banner += (char.rjust(just) + "|")
-    banner = banner[:-1] + "]  Sum"
-
-    printFmt(0)
-    print(banner)
-    for char in letters:
-        # additions beyond ord(char)%2) account for ä (228), ö (246), and ü (252)
-        printFmt((ord(char)%2) + int(ord(char)/220) + int(ord(char)/240) + int(ord(char)/250))
-        if (char in vowels):
-            print("    VOWEL ", end="")
-        elif (vowels != [-1]):
-            print("CONSONANT ", end="")
-        print(letters[char])
-        printFmtEnd()
-
-    if (vowels != [-1]):
-        print("------------------------------------",end="")
-        for i in range(len(vowels)):
-            print("--",end="")
-        print()
-        print(f"| The following vowels were found: ",end="")
-        for i in range(len(vowels)):
-            print(f"{vowels[i]},", end="")
-        print("|")
-        print("------------------------------------",end="")
-        for i in range(len(vowels)):
-            print("--",end="")
-        if (len(vowels) == 0):
-            print("No vowels were found...")
-        print()
-
+from letter import letter
 
 #███████╗██╗   ██╗██╗  ██╗██╗  ██╗ ██████╗ ████████╗██╗███╗   ██╗███████╗
 #██╔════╝██║   ██║██║ ██╔╝██║  ██║██╔═══██╗╚══██╔══╝██║████╗  ██║██╔════╝
@@ -369,7 +69,7 @@ def printFullTable(letters, vowels=[]):
 #
 # ret letters - A dictionary. See above.
 #
-def initLetters():
+def initLetters(diaeresis, justLen):
     # init letters dictionary
     # {"<letter>" : <letter class>}
     # to access the adjacenct frequency of "a" for "b" use:
@@ -377,11 +77,12 @@ def initLetters():
     # that will return the number of times a is adjacent to b
     letters = {};
     for i in range(26):
-        letters.update({chr(97+i) : letter(chr(97+i))})
-    if(UMLAUT):
-        letters.update({"ä" : letter("ä")})
-        letters.update({"ö" : letter("ö")})
-        letters.update({"ü" : letter("ü")})
+        # diaeresis=False, justLen=6
+        letters.update({chr(97+i) : letter(chr(97+i),diaeresis, justLen)})
+    if(diaeresis):
+        letters.update({"ä" : letter("ä",diaeresis, justLen)})
+        letters.update({"ö" : letter("ö",diaeresis, justLen)})
+        letters.update({"ü" : letter("ü",diaeresis, justLen)})
     
     return letters
 
@@ -655,8 +356,8 @@ def step6():
 #
 # ret vowels    --> list of strings representing the vowels that were found
 #
-def sukhotinsAlgorithm(fileName):
-    letters = initLetters()
+def sukhotinsAlgorithm(fileName, diaeresis=False, justLen=6):
+    letters = initLetters(diaeresis, justLen)
     step1(fileName, letters)
     step2(letters)
     rowSums, letterTypes = step3(letters)
@@ -669,23 +370,3 @@ def sukhotinsAlgorithm(fileName):
             vowels.append(char)
     return letters, vowels
 
-
-#███╗   ███╗ █████╗ ██╗███╗   ██╗
-#████╗ ████║██╔══██╗██║████╗  ██║
-#██╔████╔██║███████║██║██╔██╗ ██║
-#██║╚██╔╝██║██╔══██║██║██║╚██╗██║
-#██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
-#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
-
-
-def main():
-    letters, vowels = sukhotinsAlgorithm(fileName)
-
-    printReducedTable(letters, vowels)
-
-    print("\n")
-
-    printFullTable(letters, vowels)
-
-if __name__ == "__main__":
-    main()
