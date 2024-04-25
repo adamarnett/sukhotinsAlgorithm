@@ -38,11 +38,11 @@ of Frankenstein:
 `python3 ./main.py frankenstein.txt`  
 
 The program also has the following options:  
-`[cellWidth] - set the width in characters of the cells in the printed table. Must follow immediately after the [textFile] argument.`  
-`[-c] - Disable high contrast colors, if the program does not run on MacOS or Windows, using this option may help.`  
-`[-d] - Enable use of characters with diaeresis like ä and ö.`  
-`[-f] - Enable printing of entire table, including characters not appearing in the text`  
-`[-r] - Enable printing of characters not considered by the algorithm like æ.`  
+`[cellWidth]` Set the width in characters of the cells in the printed table. Must follow immediately after the [textFile] argument.  
+`[-c]` - Disable high contrast colors, if the program does not run on MacOS or Windows, using this option may help.  
+`[-d]` - Enable use of characters with diaeresis like ä and ö.  
+`[-f]` - Enable printing of entire table, including characters not appearing in the text  
+`[-r]` - Enable printing of characters not considered by the algorithm like æ.  
 To run the program with all the options, use:  
 `python3 ./main.py frankenstein.txt 7 -c -d -f -r`  
 
