@@ -43,6 +43,8 @@ The program also has the following options:
 `[-d] - Enable use of characters with diaeresis like ä and ö.`  
 `[-f] - Enable printing of entire table, including characters not appearing in the text`  
 `[-r] - Enable printing of characters not considered by the algorithm like æ.`  
+To run the program with all the options, use:  
+`python3 ./main.py frankenstein.txt 7 -c -d -f -r`  
 
     
 # Sukhotin's Algorithm

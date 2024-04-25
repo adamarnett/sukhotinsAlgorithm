@@ -111,7 +111,9 @@ def initLetters(diaeresis, justLen):
 #          └───┴───┴───┴───┴───┘             └───┴───┴───┴───┴───┘
 #
 # param fileName  --> name of file to be read, "words.txt" for example.
+#
 # param letters   --> unmodified dictionary returned by initLetters()
+#
 # param showErrors  --> bool, prints rejected characters if true
 #
 def step1(fileName, letters, showErrors):
@@ -331,6 +333,8 @@ def step4(letters, rowSums, letterTypes):
 # param rowSums --> dictionary of sums for each row
 #                   {<letter as string> : <row sum as int >= 0>}
 #
+# param maxChar --> string of newly selected vowel
+#
 # param letterTypes --> dictionary of types of each letter, consonant or vowel
 #                       {<letter as string> : <"CONSONANT" or "VOWEL">}
 #
@@ -352,6 +356,13 @@ def step6():
 #
 # param fileName    --> Name of file to read. Must be a path. (ie, "./words.txt" or
 #                       "/home/user/Desktop/words.txt")
+#
+# param diaeresis   --> if True enables use of characters with diaeresis
+#
+# param justLen --> width of cells in printed table
+#
+# param showErrors  --> if True shows rejected characters as messages on output
+#
 # ret letters   --> dictionary of frequencies of letters, see initLetters for details
 #
 # ret vowels    --> list of strings representing the vowels that were found
