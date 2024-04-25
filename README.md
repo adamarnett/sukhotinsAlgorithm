@@ -1,7 +1,7 @@
 Math 5248 Final Project  
 Adam Arnett, April 2024  
   
-## Repo Tour
+## Repository Tour
 The repository contains the following:
 - README.md
     - You're reading the repo tour
@@ -31,7 +31,7 @@ same directory as the extracted files, use the following command to use the
 program:  
 `python3 ./main.py [textFile]`  
 
-[textFile] should be replaced by whatever .txt file you want to use the 
+`[textFile]` should be replaced by whatever .txt file you want to use the 
 algorithm on. Note that the program has only been tested on .txt files. If you 
 use the following command, it will run the program with the included copy 
 of Frankenstein:  
@@ -41,7 +41,7 @@ The program also has the following options:
 `[cellWidth]` Set the width in characters of the cells in the printed table. Must follow immediately after the `[textFile]` argument.  
 `[-c]` - Disable high contrast colors, if the program does not run on MacOS or Windows, using this option may help.  
 `[-d]` - Enable use of characters with diaeresis like ä and ö.  
-`[-f]` - Enable printing of entire table, including characters not appearing in the text  
+`[-f]` - Enable printing of entire table, including characters not appearing in the text.  
 `[-r]` - Enable printing of characters not considered by the algorithm like æ.  
 To run the program with all the options, use:  
 `python3 ./main.py frankenstein.txt 7 -c -d -f -r`  
@@ -81,7 +81,7 @@ which part of the key was used to encrypt it.
 A different use of Sukhotin's algorithm is to assist in determining if a text is
 actual language or not, and if it is, finding the vowels can help determine what
 language the text it. One notable use of the algorithm is on the Voynich 
-Manuscript, a one-of-a-kind book written in an also on-of-a-kind script and 
+Manuscript, a one-of-a-kind book written in an also one-of-a-kind script and 
 language, dated to the 15th century. So far, nobody has been able to determine 
 what language it was written in or decipher the script. Sukhotin's algorithm 
 revealed six likely vowels in the script, one of which appears very similar to 
@@ -119,7 +119,7 @@ Example:
 Fill the diagonals with zeros, such that the matrix shows that no letter occurs 
 next to itself. Using "GALES" as an example would show no change since no letter
 occurs next to another of itself, so for this step "SMOOTH" will be used as an
-example instead. Notice that where the "*Oth*" row intersects the "*Oth*" 
+example instead. Notice that where the "*Oth* " row intersects the "*Oth* " 
 column, the two is changed to a zero.  
 Example:
 
@@ -158,7 +158,7 @@ return to using "GALES" as an example:
 #### Step Four
 Find the first consonant with the highest row sum and assume that letter is 
 actually a vowel. If no consonants have a row sum greater than zero, the 
-algorithm has completed. In the example, notice that "*a*" is the first letter 
+algorithm has completed. In the example, notice that "*a* " is the first letter 
 tied for the highest sum, so it is selected.  
 Example:
 
@@ -180,10 +180,9 @@ Example:
 For each consonant, subtract two times that consonant's number of times it was 
 adjacent to the new vowel from that consonants row sum. 
 In pseudocode, each consonant's row sum undergoes the following operation:  
-`consonant.rowSum = consonant.rowSum - (2 * consonant.numTimesNextTo(newVowel))
-`  
+`consonant.rowSum = consonant.rowSum - (2 * consonant.numTimesNextTo(newVowel))`  
 In the example, two is 
-subtracted from the row sum of "*g*", because "*g*" occurs next to "*a*" once. 
+subtracted from the row sum of "*g* ", because "*g* " occurs next to "*a* " once. 
 
 
             G A L E S                                  G A L E S                         
@@ -204,12 +203,12 @@ subtracted from the row sum of "*g*", because "*g*" occurs next to "*a*" once.
 Return to step four.  
 
 For illustrative purposes, the remainder of the example is pictured below. In 
-the second iteration of step four, "*e*" is selected as a vowel and in the 
+the second iteration of step four, "*e* " is selected as a vowel and in the 
 second iteration of step five, each remaining consonant's row sum has two times 
-that consonant's frequency next to "*e*" subtracted from it. After returning to 
+that consonant's frequency next to "*e* " subtracted from it. After returning to 
 step four in step six, the third iteration of step four finds that no consonants
  remaining have a row sum greater than zero, so the algorithm is finished and 
-"*a*" and "*e*" have been identified as vowels - which is correct!
+"*a* " and "*e* " have been identified as vowels - which is correct!
 
              G A L E S                                 G A L E S                         
          a   e   g   l   s   Sum                    a   e   g   l   s   Sum              
