@@ -4,17 +4,6 @@ import printFunctions as p
 import argparse as a
 import os.path as o
 
-# read from this file
-#fileName = "kalevala.txt"
-#fileName = "frankenstein.txt"
-#fileName = "aliceInWonderland.txt"
-#fileName = "collection.txt"
-#fileName = "ShikéyahBidahNa'at'a'í.txt"
-#fileName = "verwandlung.txt"
-#fileName = "words.txt"
-#fileName = "empty.txt"
-
-
 #███╗   ███╗ █████╗ ██╗███╗   ██╗
 #████╗ ████║██╔══██╗██║████╗  ██║
 #██╔████╔██║███████║██║██╔██╗ ██║
@@ -23,7 +12,7 @@ import os.path as o
 #╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 
 
-def main(fileName, cellWidth, d, f, r):
+def main(fileName, cellWidth, c, d, f, r):
 
     # error checking
     if (fileName[-4:] != ".txt"):
@@ -31,18 +20,23 @@ def main(fileName, cellWidth, d, f, r):
     if (not o.isfile(fileName)):
         raise OSError(f"File {fileName} not found")
     
-
+    # call function for algorithm, returns letters dictionary and list of vowels
     letters, vowels = s.sukhotinsAlgorithm(fileName, d, cellWidth, r)
 
+    # newline
     print()
 
+    # if print full (includes all letters, even if they don't appear in text), do that
+    #   otherwise print reduced (includes all letters that appear in text)
     if (f):
-        p.printFullTable(letters, vowels)
+        p.printFullTable(letters, vowels, c)
     else:
-        p.printReducedTable(letters, vowels)
+        p.printReducedTable(letters, vowels, c)
 
+    # newline
     print()
     
+    # return w/o error
     return 0
 
     
@@ -61,6 +55,10 @@ if __name__ == "__main__":
         const="arg_was_not_given",
         nargs="?"
     )
+    parser.add_argument("-c",
+        action="store_false",
+        help="Flag to disable high contrast rows when printing table. Optional."
+    )
     parser.add_argument("-d",
         action="store_true",
         help="Flag to enable use of characters with diaeresis like ä and ö. Optional."
@@ -75,4 +73,4 @@ if __name__ == "__main__":
     )
     
     args = parser.parse_args()
-    main(args.fileName[0], args.cellWidth, args.d, args.f, args.r)
+    main(args.fileName[0], args.cellWidth, args.c, args.d, args.f, args.r)

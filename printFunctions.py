@@ -19,7 +19,10 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def printFmt(input):
+def printFmt(input, monochrome=False):
+    if (not monochrome):
+        return
+    
     if (input < 2):
         if input:
             print(bcolors.OKCYAN, end="")
@@ -31,7 +34,9 @@ def printFmt(input):
         print(bcolors.OKCYAN, end="")
 
 
-def printFmtEnd():
+def printFmtEnd(monochrome=False):
+    if (not monochrome):
+        return
     print(bcolors.ENDC, end="")
 
 
@@ -45,7 +50,7 @@ def printFmtEnd():
 
 # print table of characters present in text
 # pass [-1] to vowels to only show character frequencies
-def printReducedTable(letters, vowels=[]):
+def printReducedTable(letters, vowels=[], monochrome=False):
     # find appropriate justification
     #just = 0
     #for char in letters:
@@ -62,16 +67,16 @@ def printReducedTable(letters, vowels=[]):
             doPrint += char
             banner += (char.rjust(letters[char].justLen) + "|")
     banner = banner[:-1] + "]  Sum"
-    printFmt(1)
+    printFmt(1, monochrome)
     print(banner)
     for char in doPrint:
-        printFmt((doPrint.index(char))%2)
+        printFmt((doPrint.index(char))%2, monochrome)
         if (char in vowels):
             print("    VOWEL ", end="")
         elif (vowels != [-1]):
             print("CONSONANT ", end="")
         print(letters[char].reducedJustifiedRepr(doPrint))
-        printFmtEnd()
+        printFmtEnd(monochrome)
     
     if (vowels != [-1]):
         print("------------------------------------",end="")
@@ -89,7 +94,7 @@ def printReducedTable(letters, vowels=[]):
             print("No vowels were found...")
         print()
 
-def printFullTable(letters, vowels=[]):
+def printFullTable(letters, vowels=[], monochrome=False):
     # find appropriate justification
     just = 0
     for char in letters:
@@ -104,17 +109,17 @@ def printFullTable(letters, vowels=[]):
         banner += (char.rjust(just) + "|")
     banner = banner[:-1] + "]  Sum"
 
-    printFmt(0)
+    printFmt(0, monochrome)
     print(banner)
     for char in letters:
         # additions beyond ord(char)%2) account for ä (228), ö (246), and ü (252)
-        printFmt((ord(char)%2) + int(ord(char)/220) + int(ord(char)/240) + int(ord(char)/250))
+        printFmt((ord(char)%2) + int(ord(char)/220) + int(ord(char)/240) + int(ord(char)/250), monochrome)
         if (char in vowels):
             print("    VOWEL ", end="")
         elif (vowels != [-1]):
             print("CONSONANT ", end="")
         print(letters[char])
-        printFmtEnd()
+        printFmtEnd(monochrome)
 
     if (vowels != [-1]):
         print("------------------------------------",end="")
